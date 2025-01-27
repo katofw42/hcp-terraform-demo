@@ -41,21 +41,4 @@ variable "ami_id" {
   default     = "ami-0d52744d6551d851e"  # Amazon Linux 2 AMI in ap-northeast-1
 }
 
-variable "db_name" {
-  description = "Database name"
-  type        = string
-  default     = "mydb"
-}
-
-variable "db_username" {
-  description = "Database username"
-  type        = string
-  default     = "dbadmin"
-}
-
-variable "db_password" {
-  description = "Database password"
-  type        = string
-  sensitive   = true
-}
 
