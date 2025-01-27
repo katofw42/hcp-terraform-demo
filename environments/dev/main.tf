@@ -133,30 +133,6 @@ resource "aws_db_subnet_group" "rds" {
   }
 }
 
-# RDS Instance
-resource "aws_db_instance" "postgresql" {
-  identifier           = "${var.environment}-postgresql"
-  allocated_storage       = 20
-  storage_type            = "gp2"
-  engine                  = "postgres"
-  engine_version          = "15.2"
-  instance_class          = "db.t3.small"
-  
-  db_name             = var.db_name
-  username            = var.db_username
-  password            = var.db_password
-  
-  vpc_security_group_ids = [aws_security_group.rds.id]
-  db_subnet_group_name   = aws_db_subnet_group.rds.name
-  
-  skip_final_snapshot    = true
-  
-  tags = {
-    Name        = "${var.environment}-postgresql-fix2"
-    Environment = var.environment
-  }
-}
-
 # Application Load Balancer
 resource "aws_lb" "alb" {
   name               = "${var.environment}-alb"
