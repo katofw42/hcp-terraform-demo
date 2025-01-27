@@ -152,7 +152,7 @@ resource "aws_db_instance" "postgresql" {
   skip_final_snapshot    = true
   
   tags = {
-    Name        = "${var.environment}-postgresql-fix"
+    Name        = "${var.environment}-postgresql-fix2"
     Environment = var.environment
   }
 }
