@@ -113,6 +113,8 @@ resource "aws_instance" "public_1" {
 resource "aws_instance" "public_2" {
   ami           = var.ami_id
   instance_type = "t2.micro"
+  volume_size = 30
+  volume_type = "gp3"
   subnet_id     = module.vpc.public_subnet_2_id
   vpc_security_group_ids = [aws_security_group.ec2.id]
 
