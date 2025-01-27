@@ -136,11 +136,11 @@ resource "aws_db_subnet_group" "rds" {
 # RDS Instance
 resource "aws_db_instance" "postgresql" {
   identifier           = "${var.environment}-postgresql"
-  engine              = "postgres"
-  engine_version      = "13.7"
-  instance_class      = "db.t3.micro"
-  allocated_storage   = 20
-  storage_type        = "gp2"
+  allocated_storage       = 20
+  storage_type            = "gp2"
+  engine                  = "postgres"
+  engine_version          = "15.2"
+  instance_class          = "db.t3.small"
   
   db_name             = var.db_name
   username            = var.db_username
