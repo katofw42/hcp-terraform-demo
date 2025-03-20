@@ -5,7 +5,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "example" {
-  ami           = "ami-0c1a7f89451184c8b" # Replace with a valid AMI ID for ap-northeast-1
+  ami           = "ami-0aab355e0bfa1fbb1" # Amazon Linux 2023 AMI ID for ap-northeast-1
   instance_type = "t3.micro"
 
   tags = {
