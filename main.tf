@@ -6,6 +6,17 @@ data "aws_ssm_parameter" "amazon_linux_2023_ami" {
   name = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
 }
 
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+}
+
 resource "aws_instance" "amazon_linux_2023" {
   count         = 2
   ami           = data.aws_ssm_parameter.amazon_linux_2023_ami.value
@@ -21,7 +32,7 @@ resource "aws_lb" "app_lb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [] // Add appropriate security group IDs
-  subnets            = [] // Add appropriate subnet IDs
+  subnets            = data.aws_subnets.default.ids
 
   enable_deletion_protection = false
 }
@@ -30,7 +41,7 @@ resource "aws_lb_target_group" "app_tg" {
   name     = "app-target-group"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = "" // Add the appropriate VPC ID
+  vpc_id   = data.aws_vpc.default.id
 }
 
 resource "aws_lb_listener" "app_listener" {
