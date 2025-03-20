@@ -1,11 +1,11 @@
 # test
 
 provider "aws" {
-  region = "ap-northeast-1"
+  region = "us-west-2" # Updated region
 }
 
 resource "aws_instance" "example" {
-  ami           = "ami-0aab355e0bfa1fbb1" # Amazon Linux 2023 AMI ID for ap-northeast-1
+  ami           = "ami-0c55b159cbfafe1f0" # Updated AMI ID
   instance_type = "t3.micro"
 
   tags = {
