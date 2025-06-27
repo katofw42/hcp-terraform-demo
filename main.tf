@@ -11,6 +11,6 @@ resource "aws_instance" "amazon_linux_2023" {
   instance_type = "t2.micro"
 
   tags = {
-    Name = "AmazonLinux2023Instance"
+    Name = "frontend-server"
   }
 }
