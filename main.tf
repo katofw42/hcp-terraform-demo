@@ -109,3 +109,110 @@ output "vpc_id" {
   value       = aws_vpc.main.id
 }
 
+# 最新のAmazon Linux 2023 AMIを取得
+data "aws_ami" "amazon_linux2023" {
+  most_recent = true
+  owners      = ["137112412989"] 
+
+  filter {
+    name   = "name"
+    values = ["al2023-ami-2023*-kernel-*-x86_64"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
+# セキュリティグループ
+resource "aws_security_group" "ec2_sg" {
+  name        = "${var.project_name}-ec2-sg"
+  description = "Security group for EC2 instances"
+  vpc_id      = aws_vpc.main.id
+
+
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.project_name}-ec2-sg"
+  }
+}
+
+# EC2インスタンス - パブリックサブネット1
+resource "aws_instance" "public_1" {
+  ami                    = data.aws_ami.amazon_linux2023.id
+  instance_type          = "t3.micro"
+  subnet_id              = aws_subnet.public_1.id
+  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+  user_data              = base64encode(local.nginx_userdata_1)
+
+  tags = {
+    Name = "${var.project_name}-ec2-public-1"
+  }
+}
+
+# EC2インスタンス - パブリックサブネット2
+resource "aws_instance" "public_2" {
+  ami                    = data.aws_ami.amazon_linux2023.id
+  instance_type          = "t3.micro"
+  subnet_id              = aws_subnet.public_2.id
+  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+  user_data              = base64encode(local.nginx_userdata_2)
+
+  tags = {
+    Name = "${var.project_name}-ec2-public-2"
+  }
+}
+
+
+# Nginx起動用userdata script
+locals {
+  nginx_userdata_1 = <<-EOF
+    #!/bin/bash
+    dnf update -y
+    dnf install -y nginx
+    systemctl enable nginx
+    systemctl start nginx
+    sed -i 's/x!/x!-01/g' /usr/share/nginx/html/index.html
+  EOF
+
+    nginx_userdata_2 = <<-EOF
+    #!/bin/bash
+    dnf update -y
+    dnf install -y nginx
+    systemctl enable nginx
+    systemctl start nginx
+    sed -i 's/x!/x!-02/g' /usr/share/nginx/html/index.html
+
+  EOF
+}
+
+# EC2インスタンスのIPアドレスを出力
+output "ec2_public_1_public_ip" {
+  description = "Public IP of EC2 instance in public subnet 1"
+  value       = aws_instance.public_1.public_ip
+}
+
+output "ec2_public_2_public_ip" {
+  description = "Public IP of EC2 instance in public subnet 2"
+  value       = aws_instance.public_2.public_ip
+}
