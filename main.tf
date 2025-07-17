@@ -135,7 +135,7 @@ data "aws_ami" "amazon_linux2023" {
 
 # セキュリティグループ
 resource "aws_security_group" "ec2_sg" {
-  name        = hcp-terraform-handson-ec2-sg"
+  name        = "hcp-terraform-handson-ec2-sg"
   description = "Security group for EC2 instances"
   vpc_id      = aws_vpc.main.id
 
