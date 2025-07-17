@@ -167,7 +167,7 @@ resource "aws_security_group" "ec2_sg" {
 # EC2インスタンス - パブリックサブネット1
 resource "aws_instance" "public_1" {
   ami                    = data.aws_ami.amazon_linux2023.id
-  instance_type          = "t3.micro"
+  instance_type          = "m5.large"
   subnet_id              = aws_subnet.public_1.id
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
   user_data              = base64encode(local.nginx_userdata_1)
