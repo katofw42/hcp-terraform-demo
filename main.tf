@@ -29,7 +29,7 @@ variable "project_name" {
   type        = string
   default     = "hcp-terraform-handson"
 }
-variable "env" {
+variable "environment" {
   description = "Environment name (dev, prod)"
   type        = string
 }
@@ -41,7 +41,7 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
 
   tags = {
-    Name = "${var.project_name}-${var.env}-vpc"
+    Name = "${var.project_name}-${var.environment}-vpc"
   }
 }
 
@@ -50,7 +50,7 @@ resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "${var.project_name}-${var.env}-igw"
+    Name = "${var.project_name}-${var.environment}-igw"
   }
 }
 
@@ -62,7 +62,7 @@ resource "aws_subnet" "public_1" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${var.project_name}-${var.env}-public-subnet-1"
+    Name = "${var.project_name}-${var.environment}-public-subnet-1"
     Type = "Public"
   }
 }
@@ -75,7 +75,7 @@ resource "aws_subnet" "public_2" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${var.project_name}-${var.env}-public-subnet-2"
+    Name = "${var.project_name}-${var.environment}-public-subnet-2"
     Type = "Public"
   }
 }
@@ -90,7 +90,7 @@ resource "aws_route_table" "main" {
   }
 
   tags = {
-    Name = "${var.project_name}-${var.env}-main-rt"
+    Name = "${var.project_name}-${var.environment}-main-rt"
   }
 }
 
@@ -135,7 +135,7 @@ data "aws_ami" "amazon_linux2023" {
 
 # セキュリティグループ
 resource "aws_security_group" "ec2_sg" {
-  name        = "${var.project_name}-${var.env}-ec2-sg"
+  name        = "${var.project_name}-${var.environment}-ec2-sg"
   description = "Security group for EC2 instances"
   vpc_id      = aws_vpc.main.id
 
@@ -156,7 +156,7 @@ resource "aws_security_group" "ec2_sg" {
   }
 
   tags = {
-    Name = "${var.project_name}-${var.env}-ec2-sg"
+    Name = "${var.project_name}-${var.environment}-ec2-sg"
   }
 }
 
@@ -169,7 +169,7 @@ resource "aws_instance" "public_1" {
   user_data              = base64encode(local.nginx_userdata_1)
 
   tags = {
-    Name = "${var.project_name}-${var.env}-ec2-public-1"
+    Name = "${var.project_name}-${var.environment}-ec2-public-1"
   }
 }
 
@@ -182,7 +182,7 @@ resource "aws_instance" "public_2" {
   user_data              = base64encode(local.nginx_userdata_2)
 
   tags = {
-    Name = "${var.project_name}-${var.env}-ec2-public-2"
+    Name = "${var.project_name}-${var.environment}-ec2-public-2"
   }
 }
 
@@ -222,7 +222,7 @@ output "ec2_public_2_public_ip" {
 
 # ALB用セキュリティグループ
 resource "aws_security_group" "alb_sg" {
-  name        = "${var.project_name}-${var.env}-alb-sg"
+  name        = "${var.project_name}-${var.environment}-alb-sg"
   description = "Security group for ALB"
   vpc_id      = aws_vpc.main.id
 
@@ -242,13 +242,13 @@ resource "aws_security_group" "alb_sg" {
   }
 
   tags = {
-    Name = "${var.project_name}-${var.env}-alb-sg"
+    Name = "${var.project_name}-${var.environment}-alb-sg"
   }
 }
 
 # Application Load Balancer
 resource "aws_lb" "main" {
-  name               = "${var.project_name}-${var.env}-alb"
+  name               = "${var.project_name}-${var.environment}-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_sg.id]
@@ -257,13 +257,13 @@ resource "aws_lb" "main" {
   enable_deletion_protection = false
 
   tags = {
-    Name = "${var.project_name}-${var.env}-alb"
+    Name = "${var.project_name}-${var.environment}-alb"
   }
 }
 
 # ターゲットグループ
 resource "aws_lb_target_group" "main" {
-  name     = "${var.project_name}-${var.env}-tg"
+  name     = "${var.project_name}-${var.environment}-tg"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.main.id
@@ -281,7 +281,7 @@ resource "aws_lb_target_group" "main" {
   }
 
   tags = {
-    Name = "${var.project_name}-${var.env}-tg"
+    Name = "${var.project_name}-${var.environment}-tg"
   }
 }
 
