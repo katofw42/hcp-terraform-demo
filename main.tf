@@ -135,7 +135,7 @@ data "aws_ami" "amazon_linux2023" {
 
 # セキュリティグループ
 resource "aws_security_group" "ec2_sg" {
-  name        = "${var.project_name}-${var.environment}-ec2-sg"
+  name        = hcp-terraform-handson-ec2-sg"
   description = "Security group for EC2 instances"
   vpc_id      = aws_vpc.main.id
 
@@ -226,7 +226,7 @@ output "ec2_public_2_public_ip" {
 
 # ALB用セキュリティグループ
 resource "aws_security_group" "alb_sg" {
-  name        = "${var.project_name}-${var.environment}-alb-sg"
+  name        = "hcp-terraform-handson-alb-sg"
   description = "Security group for ALB"
   vpc_id      = aws_vpc.main.id
 
