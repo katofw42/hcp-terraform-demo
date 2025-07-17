@@ -158,6 +158,10 @@ resource "aws_security_group" "ec2_sg" {
   tags = {
     Name = "${var.project_name}-${var.environment}-ec2-sg"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # EC2インスタンス - パブリックサブネット1
@@ -243,6 +247,10 @@ resource "aws_security_group" "alb_sg" {
 
   tags = {
     Name = "${var.project_name}-${var.environment}-alb-sg"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
