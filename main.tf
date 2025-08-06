@@ -10,7 +10,7 @@ resource "aws_instance" "amazon_linux_2023" {
   ami           = data.aws_ssm_parameter.amazon_linux_2023_ami.value
   instance_type = "t3.small"
 
-   tags = {
+  tags = {
     Name = "bb"
   }
 
