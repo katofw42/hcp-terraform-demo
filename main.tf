@@ -13,4 +13,8 @@ resource "aws_instance" "amazon_linux_2023" {
 #   tags = {
 #    Name = "frontend-server"
 #  }
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
