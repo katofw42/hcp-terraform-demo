@@ -10,9 +10,9 @@ resource "aws_instance" "amazon_linux_2023" {
   ami           = data.aws_ssm_parameter.amazon_linux_2023_ami.value
   instance_type = "t3.small"
 
-#   tags = {
-#    Name = "frontend-server"
-#  }
+   tags = {
+    Name = "frontend-server"
+  }
 
   lifecycle {
     ignore_changes = [tags]
