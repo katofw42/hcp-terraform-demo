@@ -8,8 +8,7 @@ data "aws_ssm_parameter" "amazon_linux_2023_ami" {
 
 resource "aws_instance" "amazon_linux_2023" {
   ami           = data.aws_ssm_parameter.amazon_linux_2023_ami.value
-  instance_type = "t2.large"
-  instance_type = "t2.small"
+  instance_type = "t3.small"
 
 #   tags = {
 #    Name = "frontend-server"
