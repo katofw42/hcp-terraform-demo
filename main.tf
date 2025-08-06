@@ -11,7 +11,7 @@ resource "aws_instance" "amazon_linux_2023" {
   instance_type = "t3.small"
 
    tags = {
-    Name = "frontend-server"
+    Name = "hoge"
   }
 
   lifecycle {
