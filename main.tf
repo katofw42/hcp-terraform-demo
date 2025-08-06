@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-west-2"
+  region = "ap-northeast-3"
 }
 
 data "aws_ssm_parameter" "amazon_linux_2023_ami" {
